@@ -9,11 +9,10 @@
   <p><% urls %></p>
   
   <% for (let i in urls) { %>
-    <p><%= `${urls[i]}: ${i}` %></p><span>
-      <form method="POST" action="/urls/<%= i %>/delete">
-        <button>Delete URL</button>
-      </form>
-    </span>
+    <p><%= `${urls[i]}: ${i}` %></p><a href="/urls/<%= i %>">Edit</a>
+    <form method="POST" action="/urls/<%= i %>/delete">
+      <input type="submit" value="Delete URL">
+    </form>
   <% } %>
   
   <a href="#">Shorten a URL!</a>

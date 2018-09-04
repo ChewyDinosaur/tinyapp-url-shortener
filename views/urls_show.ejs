@@ -6,7 +6,13 @@
 <body>
   <% include ./partials/_header %>
 
-  <p>URLS_SHOW PAGE</p>
+  <h2>ShortURL: <%= shortURL %></h2>
+
+  <form action='/urls/<%= shortURL %>' method="POST">
+    <input id="longURL" type="text" name="longURL" placeholder="<%= longURL %>">
+    <input type="submit" value="Submit">
+  </form>
+
   <p><%= `${longURL}:${shortURL}` %></p>
 </body>
 </html>
