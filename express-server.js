@@ -24,14 +24,6 @@ app.get('/urls/new', (req, res) => {
   res.render('urls_new');
 });
 
-app.post("/urls", (req, res) => {
-  const shortURL = generateRandomString();
-  const longURL = req.body.longURL;
-  urlDatabase[shortURL] = longURL;
-  console.log(urlDatabase);
-  res.redirect(`/urls/${shortURL}`);
-});
-
 app.get('/urls/:id', (req, res) => {
   let templateVars = { 
     shortURL: req.params.id,
@@ -40,14 +32,28 @@ app.get('/urls/:id', (req, res) => {
   res.render('urls_show', templateVars)
 });
 
-app.get('/u/:shortURL', (req, res) => {
-  const shortURL = req.params.shortURL;
+app.get('/u/:id', (req, res) => {
+  const shortURL = req.params.id;
   // check to make sure shortURL is valid
   if (!urlDatabase.hasOwnProperty(shortURL)) {
     return res.send('Incorrect URL');
   }
   let longURL = urlDatabase[shortURL];
   res.redirect(longURL);
+});
+
+app.post('/urls', (req, res) => {
+  const shortURL = generateRandomString();
+  const longURL = req.body.longURL;
+  urlDatabase[shortURL] = longURL;
+  console.log(urlDatabase);
+  res.redirect(`/urls/${shortURL}`);
+});
+
+app.post('/urls/:id/delete', (req, res) => {
+  const shortURL = req.params.id;
+  delete urlDatabase[shortURL];
+  res.redirect('/urls');
 });
 
 app.listen(PORT, () => {

@@ -7,11 +7,15 @@
     <% include ./partials/_header %>  
 
   <p><% urls %></p>
-  <ul>
-    <% for (let i in urls) { %>
-      <li><%= `${urls[i]}: ${i}` %></li>
-    <% } %>
-  </ul>
+  
+  <% for (let i in urls) { %>
+    <p><%= `${urls[i]}: ${i}` %></p><span>
+      <form method="POST" action="/urls/<%= i %>/delete">
+        <button>Delete URL</button>
+      </form>
+    </span>
+  <% } %>
+  
   <a href="#">Shorten a URL!</a>
 </body>
 </html>
