@@ -103,13 +103,29 @@ app.post('/urls/:id', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  const loginName = req.body.username;
-  res.cookie('username', loginName);
-  res.redirect('/urls');
+  const email = req.body.email;
+  const password = req.body.password;
+  let id = '';
+  for (var i in users) {
+    if (users[i].email === email) {
+      if (users[i].password === password) {
+        id = users[i].id;
+        res.cookie('user_id', id);
+        break;
+      } else {
+        return res.status(403).send('Password incorrect.');
+      }
+    } else {
+      return res.status(403).send('Email not found.');
+    }
+  }
+  
+  // res.cookie('username', loginName);
+  res.redirect('/');
 });
 
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 });
 
@@ -120,7 +136,7 @@ app.post('/register', (req, res) => {
   console.log(req.body);
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
-    res.status(400).send('Email or password was left blank.');
+    return res.status(400).send('Email or password was left blank.');
   }
 
   users[id] = {
