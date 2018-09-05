@@ -25,7 +25,7 @@ const users = {
   "userRandomID": {
     id: "userRandomID", 
     email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
+    password: "user"
   },
  "user2RandomID": {
     id: "user2RandomID", 
@@ -68,10 +68,12 @@ app.get('/login', (req, res) => {
 app.get('/urls', (req, res) => {
   const cookie = req.cookies;
   //Filter through database to display only a users urls
+  const userURLS = urlsForUser(cookie.user_id);
   let templateVars = { 
-    urls: urlDatabase,
+    urls: userURLS,
     users: users,
-    cookie: cookie
+    cookie: cookie,
+    error: null
   };
   if (cookie.user_id) {
     res.render('urls_index', templateVars);
@@ -94,13 +96,29 @@ app.get('/urls/new', (req, res) => {
 });
 
 app.get('/urls/:id', (req, res) => {
+  const shortURL = req.params.id;
+  const cookie = req.cookies;
+  const userURLS = urlsForUser(cookie.user_id);
   let templateVars = { 
-    shortURL: req.params.id,
+    shortURL: shortURL,
     longURL: urlDatabase[req.params.id].url,
     users: users,
-    cookie: req.cookies
+    cookie: cookie,
+    urls: userURLS,
+    error: null
   };
-  res.render('urls_show', templateVars)
+
+  if (!cookie.user_id) {
+    // Not logged in
+    res.status(403).render('login', { error: 'You need to be logged in to view that page.' });
+  } else if (cookie.user_id === urlDatabase[shortURL].userID) {
+    // Logged in and url belongs to user
+    res.render('urls_show', templateVars)
+  } else {
+    // Url does not belong to user, return them to their list of URLS with an error message
+    templateVars.error = 'You do not have permission to access that URL.';
+    res.status(403).render('urls_index', templateVars);
+  }
 });
 
 app.get('/u/:id', (req, res) => {
@@ -207,4 +225,17 @@ function generateRandomString() {
     newString += String.fromCharCode(code);
   }
   return newString;
+}
+
+function urlsForUser(id) {
+  let userURLS = {};
+  for (var i in urlDatabase) {
+    if (urlDatabase[i].userID === id) {
+      userURLS[i] = {
+        userID: id,
+        url: urlDatabase[i].url
+      };
+    }
+  }
+  return userURLS;
 }
