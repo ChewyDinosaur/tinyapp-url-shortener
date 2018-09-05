@@ -1,8 +1,3 @@
-// Left off at task #10
-// Still need to modify header to show logout for logged in users
-// instead of the login link
-
-
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
@@ -86,6 +81,7 @@ app.get('/urls/:id', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
   const shortURL = req.params.id;
+
   // check to make sure shortURL is valid
   if (!urlDatabase.hasOwnProperty(shortURL)) {
     return res.send('Incorrect URL');
@@ -93,6 +89,10 @@ app.get('/u/:id', (req, res) => {
   let longURL = urlDatabase[shortURL];
   res.redirect(longURL);
 });
+
+//
+// ---------------- POSTS -----------------
+//
 
 app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
