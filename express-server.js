@@ -40,14 +40,16 @@ app.get('/', (req, res) => {
 
 app.get('/registration', (req, res) => {
   let templateVars = {
-    users: users
+    users: users,
+    error: null
   };
   res.render('registration', templateVars);
 });
 
 app.get('/login', (req, res) => {
   let templateVars = {
-    users: users
+    users: users,
+    error: null
   }
   res.render('login', templateVars);
 });
@@ -129,11 +131,11 @@ app.post('/login', (req, res) => {
         res.cookie('user_id', id);
         return res.redirect('/urls');
       } else {
-        return res.status(403).send('Password incorrect.');
+        return res.status(403).render('login', { error: 'Password incorrect.' });
       }
     }
   }
-  return res.status(403).send('Email not found.');
+  return res.status(403).render('login', { error: 'Email incorrect.' });
 });
 
 app.post('/logout', (req, res) => {
@@ -147,7 +149,7 @@ app.post('/register', (req, res) => {
   const id = generateRandomString();
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
-    return res.status(400).send('Email or password was left blank.');
+    return res.status(400).render('registration', { error: 'Email or password was left blank.' });
   }
 
   users[id] = {

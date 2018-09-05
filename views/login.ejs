@@ -5,20 +5,15 @@
 </head>
 <body style="font-size:20px; padding:50px;">
   <h1>Login</h1>
-  
-  <% if (false) { %>
-    <p>Hello</p>
-    <form method="POST" action="/logout">
-      <input type="submit" value="Logout">
-    </form>
-  <% } else { %>
-    <form method="POST" action="/login">
-      <label for="email">Email:</label>
-      <input type="email" name="email">
-      <label for="password">Password:</label>
-      <input type="password" name="password">
-      <input type="submit" value="Submit">
-    </form>
+  <% if (error) { %>
+    <p><%= error %></p>
   <% } %>
+  <form method="POST" action="/login">
+    <label for="email">Email:</label>
+    <input type="email" name="email">
+    <label for="password">Password:</label>
+    <input type="password" name="password">
+    <input type="submit" value="Submit">
+  </form>
 </body>
 </html>

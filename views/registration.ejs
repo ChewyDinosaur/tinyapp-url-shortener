@@ -5,6 +5,9 @@
 </head>
 <body style="font-size:20px; padding:50px;">
   <h1>Registration</h1>
+  <% if (error) { %>
+    <p><%= error %></p>
+  <% } %>
   <form action="/register" method="POST">
     <label for="email">Email:</label>
     <input type="email" name="email">
