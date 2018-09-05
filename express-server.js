@@ -36,22 +36,29 @@ app.get('/', (req, res) => {
 
 app.get('/registration', (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    users: users
   };
   res.render('registration', templateVars);
+});
+
+app.get('/login', (req, res) => {
+  let templateVars = {
+    users: users
+  }
+  res.render('login', templateVars);
 });
 
 app.get('/urls', (req, res) => {
   let templateVars = { 
     urls: urlDatabase,
-    username: req.cookies["username"]
+    users: users
   };
   res.render('urls_index', templateVars);
 });
 
 app.get('/urls/new', (req, res) => {
   let templateVars = {
-    username: req.cookies["username"]
+    users: users
   };
   res.render('urls_new', templateVars);
 });
@@ -60,7 +67,7 @@ app.get('/urls/:id', (req, res) => {
   let templateVars = { 
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
-    username: req.cookies["username"],
+    users: users
   };
   res.render('urls_show', templateVars)
 });
@@ -110,6 +117,12 @@ app.post('/register', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const id = generateRandomString();
+  console.log(req.body);
+  // Check to make sure fields are not empty
+  if (email === '' || password === '') {
+    res.status(400).send('Email or password was left blank.');
+  }
+
   users[id] = {
     id: id,
     email: email,
