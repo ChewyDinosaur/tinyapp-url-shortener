@@ -1,3 +1,8 @@
+// Left off at task #10
+// Still need to modify header to show logout for logged in users
+// instead of the login link
+
+
 const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
@@ -31,7 +36,11 @@ const users = {
 
 
 app.get('/', (req, res) => {
-  res.send('Hello!');
+  let templateVars = {
+    users: users,
+    cookie: req.cookies
+  }
+  res.render('index', templateVars);
 });
 
 app.get('/registration', (req, res) => {
@@ -51,14 +60,16 @@ app.get('/login', (req, res) => {
 app.get('/urls', (req, res) => {
   let templateVars = { 
     urls: urlDatabase,
-    users: users
+    users: users,
+    cookie: req.cookies
   };
   res.render('urls_index', templateVars);
 });
 
 app.get('/urls/new', (req, res) => {
   let templateVars = {
-    users: users
+    users: users,
+    cookie: req.cookies
   };
   res.render('urls_new', templateVars);
 });
@@ -67,7 +78,8 @@ app.get('/urls/:id', (req, res) => {
   let templateVars = { 
     shortURL: req.params.id,
     longURL: urlDatabase[req.params.id],
-    users: users
+    users: users,
+    cookie: req.cookies
   };
   res.render('urls_show', templateVars)
 });
@@ -107,33 +119,32 @@ app.post('/login', (req, res) => {
   const password = req.body.password;
   let id = '';
   for (var i in users) {
-    if (users[i].email === email) {
+    if (users[i].email !== email) {
+      // Not a match, skip to next user
+      continue;
+    } else {
+      // Found match
       if (users[i].password === password) {
         id = users[i].id;
         res.cookie('user_id', id);
-        break;
+        return res.redirect('/urls');
       } else {
         return res.status(403).send('Password incorrect.');
       }
-    } else {
-      return res.status(403).send('Email not found.');
     }
   }
-  
-  // res.cookie('username', loginName);
-  res.redirect('/');
+  return res.status(403).send('Email not found.');
 });
 
 app.post('/logout', (req, res) => {
   res.clearCookie('user_id');
-  res.redirect('/urls');
+  res.redirect('/');
 });
 
 app.post('/register', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const id = generateRandomString();
-  console.log(req.body);
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
     return res.status(400).send('Email or password was left blank.');
@@ -144,6 +155,7 @@ app.post('/register', (req, res) => {
     email: email,
     password: password
   };
+  console.log(users);
   res.cookie('user_id', id);
   res.redirect('/urls')
 });

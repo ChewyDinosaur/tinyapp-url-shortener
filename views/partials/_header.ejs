@@ -1,3 +1,10 @@
 <h2>TinyApp</h2>
-<a href='/registration'>Register</a>
-<a href="/login">Login</a>
+<% if (cookie.user_id) { %>
+  <p>Hello <%= users[cookie.user_id].email %></p>
+  <form method="POST" action="/logout">
+    <input type="submit" value="Logout">
+  </form>
+<% } else { %>
+  <a href='/registration'>Register</a>
+  <a href="/login">Login</a>
+<% } %>
