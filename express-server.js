@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 const PORT = 8080;
 
@@ -168,7 +169,7 @@ app.post('/login', (req, res) => {
       continue;
     } else {
       // Found match
-      if (users[i].password === password) {
+      if (bcrypt.compareSync(password, users[i].password)) {
         id = users[i].id;
         res.cookie('user_id', id);
         return res.redirect('/urls');
@@ -188,6 +189,7 @@ app.post('/logout', (req, res) => {
 app.post('/register', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  const hashedPassword = bcrypt.hashSync(password, 10);
   const id = generateRandomString();
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
@@ -197,7 +199,7 @@ app.post('/register', (req, res) => {
   users[id] = {
     id: id,
     email: email,
-    password: password
+    password: hashedPassword
   };
   res.cookie('user_id', id);
   res.redirect('/urls')
