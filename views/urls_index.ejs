@@ -10,7 +10,7 @@
   
   <% for (let i in urls) { %>
     <div>
-      <p style="display: inline"><%= `${i} ---> ${urls[i]}` %></a></p><a href="/urls/<%= i %>">Edit</a>
+      <p style="display: inline"><%= `${i} ---> ${urls[i].url}` %></a></p><a href="/urls/<%= i %>">Edit</a>
       <form method="POST" action="/urls/<%= i %>/delete" style="display: inline">
         <input type="submit" value="Delete URL">
       </form>
