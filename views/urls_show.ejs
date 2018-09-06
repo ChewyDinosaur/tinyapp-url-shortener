@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
 <body>
   <% include ./partials/_header %>
 
-  <h2>ShortURL: <%= shortURL %></h2>
+  <div class="container">
+    <h2>ShortURL: <%= shortURL %></h2>
+    <p class="p-margin"><%= `Currently redirecting to: ${longURL}` %></p>
+    <p class="p-margin"><%= `To change the destination of ${shortURL}, enter a new URL below.` %></p>
 
-  <form action='/urls/<%= shortURL %>' method="POST">
-    <input id="longURL" type="text" name="longURL" placeholder="<%= longURL %>">
-    <input type="submit" value="Submit">
-  </form>
 
-  <p><%= `${longURL}:${shortURL}` %></p>
-  <a href="/urls">Back to URLS</a>
+    <form action='/urls/<%= shortURL %>' method="POST">
+      <div class="input-group mb-3 new-url-input">
+        <input class="form-control" id="longURL" type="text" name="longURL" placeholder="<%= longURL %>">
+        <div class="input-group-append">
+          <input class="btn btn-outline-dark" type="submit" value="Submit">
+        </div>
+      </div>
+    </form>
+
+    <a href="/urls"><button class="btn btn-outline-dark">Back to URLS</button></a>
+  </div>
 </body>
 </html>

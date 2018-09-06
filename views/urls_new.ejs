@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
-<body style="font-size:20px; padding:50px;">
+<body>
   <% include partials/_header %>
-  <form action="/urls" method="POST" style="margin:150px;">
-    <label for="longURL">Enter a URL:</label>
-    <input id="longURL" type="text" name="longURL" value="http://" style="width: 300px">
-    <input type="submit" value="Submit">
-  </form>
+  <div class="container">
+    <form action="/urls" method="POST">
+      <label for="longURL">Enter a URL to shorten:</label>
+      <div class="input-group mb-3 new-url-input">
+        <input class="form-control" id="longURL" type="text" name="longURL" value="http://">
+        <div class="input-group-append">
+          <input class="btn btn-outline-dark" type="submit" value="Submit">
+        </div>
+      </div>
+    </form>
+  </div>
 </body>
 </html>

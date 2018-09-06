@@ -1,10 +1,14 @@
-<h2>TinyApp</h2>
-<% if (cookie.user_id) { %>
-  <p>Hello <%= users[cookie.user_id].email %></p>
-  <form method="POST" action="/logout">
-    <input type="submit" value="Logout">
-  </form>
-<% } else { %>
-  <a href='/registration'>Register</a>
-  <a href="/login">Login</a>
-<% } %>
+<nav class="navbar navbar-dark bg-dark">  
+  <h1 id="header-title">TinyApp</h1>
+  <% if (cookie.user_id) { %>  
+    <form class="form-inline" method="POST" action="/logout">
+      <span class="navbar-user-info">Hello <%= users[cookie.user_id].email %></span>
+      <input class="btn btn-light header-logout-btn" type="submit" value="Logout">
+    </form>
+  <% } else { %>
+    <span class="navbar-text">
+      <a href='/registration'><button class="btn btn-light">Register</button></a>
+      <a href="/login"><button class="btn btn-light">Login</button></a>
+    </span>
+  <% } %>
+</nav>

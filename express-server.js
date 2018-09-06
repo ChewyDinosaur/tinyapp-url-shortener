@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const PORT = 8080;
 
 app.set('view engine', 'ejs');
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
@@ -55,25 +56,24 @@ app.get('/', (req, res) => {
   } else {
     res.redirect('/login');
   }
-  // let templateVars = {
-  //   users: users,
-  //   cookie: req.session
-  // }
-  // res.render('index', templateVars);
 });
 
 app.get('/registration', (req, res) => {
+  const cookie = req.session;
   let templateVars = {
     users: users,
-    error: null
+    error: null,
+    cookie: cookie,
   };
   res.render('registration', templateVars);
 });
 
 app.get('/login', (req, res) => {
+  const cookie = req.session;
   let templateVars = {
     users: users,
-    error: null
+    error: null,
+    cookie: cookie,
   }
   res.render('login', templateVars);
 });
@@ -91,7 +91,10 @@ app.get('/urls', (req, res) => {
   if (cookie.user_id) {
     res.render('urls_index', templateVars);
   } else {
-    res.status(403).render('login', { error: 'You must be logged in to access the URLs.' })
+    res.status(403).render('login', {
+      error: 'You must be logged in to access the URLs.',
+      cookie: cookie
+    });
   }
 });
 
@@ -142,6 +145,7 @@ app.get('/u/:id', (req, res) => {
     return res.send('Incorrect URL');
   }
   let longURL = urlDatabase[shortURL].url;
+  urlDatabase[shortURL].visits += 1;
   res.redirect(longURL);
 });
 
@@ -152,7 +156,12 @@ app.get('/u/:id', (req, res) => {
 app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   const longURL = req.body.longURL;
-  urlDatabase[shortURL] = { userID: req.session.user_id, url: longURL };
+  urlDatabase[shortURL] = {
+    userID: req.session.user_id,
+    url: longURL,
+    visits: 0
+  };
+  console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
 });
 

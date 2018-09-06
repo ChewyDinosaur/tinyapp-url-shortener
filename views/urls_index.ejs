@@ -2,23 +2,47 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
 <body>
   <% include ./partials/_header %>
+  <div class="container">
+    <% if (error) { %>
+      <p><%= error %></p>
+    <% } %>
+     
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Short URL</th>
+          <th scope="col">Destination</th>
+          <th scope="col">Total Visits</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i in urls) { %>
+          <tr>
+            <td><%= i %></td>
+            <td><%= urls[i].url %></td>
+            <td><%= urls[i].visits %></td>
+            <td><a href="/urls/<%= i %>"><button class="btn btn-outline-dark">Edit</button></a></td>
+            <td>
+              <form method="POST" action="/urls/<%= i %>/delete" style="display: inline">
+                <input class="btn btn-outline-dark" type="submit" value="Delete URL">
+              </form>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <% if (Object.keys(urls).length === 0) { %>
+      <p>You don't have any shortened URLs. Add one by clicking the button below!</p>
+    <% } %>
+    <a href="/urls/new"><button class="btn btn-outline-dark">Shorten a URL!</button></a>
+  </div>
 
-  <% if (error) { %>
-    <p><%= error %></p>
-  <% } %>
-  
-  <% for (let i in urls) { %>
-    <div>
-      <p style="display: inline"><%= `${i} ---> ${urls[i].url}` %></a></p><a href="/urls/<%= i %>">Edit</a>
-      <form method="POST" action="/urls/<%= i %>/delete" style="display: inline">
-        <input type="submit" value="Delete URL">
-      </form>
-    </div>
-  <% } %>
-  
-  <a href="/urls/new">Shorten a URL!</a>
 </body>
 </html>

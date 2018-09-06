@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
   <title>TinyApp</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 </head>
-<body style="font-size:20px; padding:50px;">
+<body>
+  <% include ./partials/_header %>
   <h1>Login</h1>
   <% if (error) { %>
     <p><%= error %></p>
   <% } %>
   <form method="POST" action="/login">
     <label for="email">Email:</label>
-    <input type="email" name="email">
+    <input class="login-textbox" type="email" name="email">
     <label for="password">Password:</label>
-    <input type="password" name="password">
+    <input class="login-textbox" type="password" name="password">
     <input type="submit" value="Submit">
   </form>
 
