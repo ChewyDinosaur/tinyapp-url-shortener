@@ -9,11 +9,8 @@
   <% include ./partials/_header %>
 
   <div class="container">
-    <h2>tinyURL -> <%= shortURL %></h2>
-    <p class="p-margin"><%= `Currently redirecting to: ${longURL}` %></p>
+    <h3>Edit <%= shortURL %></h3>
     <p class="p-margin">To change the destination of this tinyURL, enter a new URL below.</p>
-
-
     <form action='/urls/<%= shortURL %>' method="POST">
       <div class="input-group mb-3 short-url-input">
         <input class="form-control" id="longURL" type="text" name="longURL" placeholder="<%= longURL %>">
@@ -23,6 +20,28 @@
       </div>
     </form>
 
+    <div class="table-responsive"> 
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">tinyURL</th>
+              <th scope="col">Destination</th>
+              <th scope="col">Total Visits</th>
+              <th scope="col">Created</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><%= shortURL %></td>
+              <td><%= longURL %></td>
+              <td><%= urls[shortURL].visits %></td>
+              <td><%= urls[shortURL].created %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     <a href="/urls"><button class="btn btn-outline-dark">Back to URLS</button></a>
   </div>
 </body>

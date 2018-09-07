@@ -3,12 +3,14 @@ const app = express();
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
+const methodOverride = require('method-override');
 
 const PORT = 8080;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(cookieSession({
   name: 'session',
   keys: ['somesuperlong1234secret'],
