@@ -10,7 +10,7 @@
   <div class="container login-container">
     <h1>Login</h1>
     <% if (error) { %>
-      <p><%= error %></p>
+      <div class="error"><%= error %></div>
     <% } %>
     <form class="login-form" method="POST" action="/login">
       <input class="form-control user-info-input" type="email" name="email" placeholder="Enter your email">

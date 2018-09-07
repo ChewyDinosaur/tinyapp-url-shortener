@@ -91,10 +91,8 @@ app.get('/urls', (req, res) => {
   if (cookie.user_id) {
     res.render('urls_index', templateVars);
   } else {
-    res.status(403).render('login', {
-      error: 'You must be logged in to access the URLs.',
-      cookie: cookie
-    });
+    templateVars.error = 'You must be logged in to access the URLs.'
+    res.status(403).render('login', templateVars);
   }
 });
 
@@ -102,12 +100,14 @@ app.get('/urls/new', (req, res) => {
   const cookie = req.session;
   let templateVars = {
     users: users,
-    cookie: cookie
+    cookie: cookie,
+    error: null
   };
   if (cookie.user_id) {
     res.render('urls_new', templateVars);
   } else {
-    res.status(403).render('login', { error: 'You must be logged in to add new URLS.' });
+    templateVars.error = 'You must be logged in to add new URLs.';
+    res.status(403).render('login', templateVars);
   }
 });
 
@@ -182,6 +182,11 @@ app.post('/urls/:id', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+  let templateVars = {
+    users: users,
+    cookie: req.session,
+    error: null
+  };
   const email = req.body.email;
   const password = req.body.password;
   let id = '';
@@ -196,11 +201,13 @@ app.post('/login', (req, res) => {
         req.session.user_id = id;
         return res.redirect('/urls');
       } else {
-        return res.status(403).render('login', { error: 'Password incorrect.' });
+        templateVars.error = 'Incorrect email or password.';
+        return res.status(403).render('login', templateVars);
       }
     }
   }
-  return res.status(403).render('login', { error: 'Email incorrect.' });
+  templateVars.error = 'Incorrect email or password.';
+  return res.status(403).render('login', templateVars);
 });
 
 app.post('/logout', (req, res) => {
@@ -209,23 +216,26 @@ app.post('/logout', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
+  let templateVars = {
+    users: users,
+    cookie: req.session,
+    error: null
+  };
   const email = req.body.email;
   const password = req.body.password;
   const hashedPassword = bcrypt.hashSync(password, 10);
   const id = generateRandomString();
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
-    return res.status(400).render('registration', { error: 'Email or password was left blank.' });
+    templateVars.error = 'Email or password was left blank.';
+    return res.status(400).render('registration', templateVars);
   }
 
   // Check if email already exists in database
   for (var i in users) {
     if (users[i].email === email) {
-      return res.status(400).render('registration', { 
-        error: 'An account with that email already exists.',
-        users: users,
-        cookie: req.session,
-      });
+      templateVars.error = 'An account with that email already exists.'
+      return res.status(400).render('registration', templateVars);
     }
   }
 
