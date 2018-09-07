@@ -11,38 +11,37 @@
     <% if (error) { %>
       <p><%= error %></p>
     <% } %>
-     
-    <table class="table">
-      <thead class="thead-light">
-        <tr>
-          <th scope="col">Short URL</th>
-          <th scope="col">Destination</th>
-          <th scope="col">Total Visits</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for (let i in urls) { %>
+    <div class="table-responsive"> 
+      <table class="table">
+        <thead class="thead-light">
           <tr>
-            <td><%= i %></td>
-            <td><%= urls[i].url %></td>
-            <td><%= urls[i].visits %></td>
-            <td><a href="/urls/<%= i %>"><button class="btn btn-outline-dark">Edit</button></a></td>
-            <td>
-              <form method="POST" action="/urls/<%= i %>/delete" style="display: inline">
-                <input class="btn btn-outline-dark" type="submit" value="Delete URL">
-              </form>
-            </td>
+            <th scope="col">tinyURL</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Total Visits</th>
+            <th scope="col">Created</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
-        <% } %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% for (let i in urls) { %>
+            <tr>
+              <td><p class="p-margin"><%= i %><p></td>
+              <td><p class="p-margin"><%= urls[i].url %></p></td>
+              <td><p class="p-margin"><%= urls[i].visits %></p></td>
+              <td><p class="p-margin"><%= urls[i].created %></p></td>
+              <td><a href="/urls/<%= i %>"><button class="btn btn-outline-dark">Edit</button></a></td>
+              <td><button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#confirmationModal">Delete</button></td>
+            </tr>
+            <% include ./partials/_modal %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
     <% if (Object.keys(urls).length === 0) { %>
       <p>You don't have any shortened URLs. Add one by clicking the button below!</p>
     <% } %>
     <a href="/urls/new"><button class="btn btn-outline-dark">Shorten a URL!</button></a>
   </div>
-
 </body>
 </html>

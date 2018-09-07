@@ -10,13 +10,14 @@
   <div class="container">
     <form action="/urls" method="POST">
       <label for="longURL">Enter a URL to shorten:</label>
-      <div class="input-group mb-3 new-url-input">
+      <div class="input-group mb-3 short-url-input">
         <input class="form-control" id="longURL" type="text" name="longURL" value="http://">
         <div class="input-group-append">
           <input class="btn btn-outline-dark" type="submit" value="Submit">
         </div>
       </div>
     </form>
+    <a href="/urls"><button class="btn btn-outline-dark">Back</button></a>
   </div>
 </body>
 </html>

@@ -156,12 +156,13 @@ app.get('/u/:id', (req, res) => {
 app.post('/urls', (req, res) => {
   const shortURL = generateRandomString();
   const longURL = req.body.longURL;
+  const created = getToday();
   urlDatabase[shortURL] = {
     userID: req.session.user_id,
     url: longURL,
-    visits: 0
+    visits: 0,
+    created: created
   };
-  console.log(urlDatabase);
   res.redirect(`/urls/${shortURL}`);
 });
 
@@ -217,6 +218,17 @@ app.post('/register', (req, res) => {
     return res.status(400).render('registration', { error: 'Email or password was left blank.' });
   }
 
+  // Check if email already exists in database
+  for (var i in users) {
+    if (users[i].email === email) {
+      return res.status(400).render('registration', { 
+        error: 'An account with that email already exists.',
+        users: users,
+        cookie: req.session,
+      });
+    }
+  }
+
   users[id] = {
     id: id,
     email: email,
@@ -256,9 +268,21 @@ function urlsForUser(id) {
     if (urlDatabase[i].userID === id) {
       userURLS[i] = {
         userID: id,
-        url: urlDatabase[i].url
+        url: urlDatabase[i].url,
+        visits: urlDatabase[i].visits,
+        created: urlDatabase[i].created
       };
     }
   }
   return userURLS;
+}
+
+function getToday() {
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"];
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth();
+  const year = today.getFullYear();
+
+  return `${months[month]} ${day}, ${year}`;
 }

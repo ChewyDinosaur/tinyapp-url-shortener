@@ -7,16 +7,17 @@
 </head>
 <body>
   <% include ./partials/_header %>
-  <h1>Registration</h1>
-  <% if (error) { %>
-    <p><%= error %></p>
-  <% } %>
-  <form action="/register" method="POST">
-    <label for="email">Email:</label>
-    <input type="email" name="email">
-    <label for="password">Password:</label>
-    <input type="password" name="password">
-    <input type="submit" value="Submit">
-  </form>
+
+  <div class="container login-container">
+    <h1>Register</h1>
+    <% if (error) { %>
+      <p><%= error %></p>
+    <% } %>
+    <form class="login-form" action="/register" method="POST">
+      <input class="form-control user-info-input" type="email" name="email" placeholder="Enter your email">
+      <input class="form-control user-info-input" type="password" name="password" placeholder="Enter a password">
+      <input class="btn btn-outline-dark" type="submit" value="Register">
+    </form>
+  </div>
 </body>
 </html>

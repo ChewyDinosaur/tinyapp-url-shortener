@@ -9,13 +9,13 @@
   <% include ./partials/_header %>
 
   <div class="container">
-    <h2>ShortURL: <%= shortURL %></h2>
+    <h2>tinyURL -> <%= shortURL %></h2>
     <p class="p-margin"><%= `Currently redirecting to: ${longURL}` %></p>
-    <p class="p-margin"><%= `To change the destination of ${shortURL}, enter a new URL below.` %></p>
+    <p class="p-margin">To change the destination of this tinyURL, enter a new URL below.</p>
 
 
     <form action='/urls/<%= shortURL %>' method="POST">
-      <div class="input-group mb-3 new-url-input">
+      <div class="input-group mb-3 short-url-input">
         <input class="form-control" id="longURL" type="text" name="longURL" placeholder="<%= longURL %>">
         <div class="input-group-append">
           <input class="btn btn-outline-dark" type="submit" value="Submit">

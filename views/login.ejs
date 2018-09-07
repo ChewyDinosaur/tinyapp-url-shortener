@@ -7,18 +7,18 @@
 </head>
 <body>
   <% include ./partials/_header %>
-  <h1>Login</h1>
-  <% if (error) { %>
-    <p><%= error %></p>
-  <% } %>
-  <form method="POST" action="/login">
-    <label for="email">Email:</label>
-    <input class="login-textbox" type="email" name="email">
-    <label for="password">Password:</label>
-    <input class="login-textbox" type="password" name="password">
-    <input type="submit" value="Submit">
-  </form>
+  <div class="container login-container">
+    <h1>Login</h1>
+    <% if (error) { %>
+      <p><%= error %></p>
+    <% } %>
+    <form class="login-form" method="POST" action="/login">
+      <input class="form-control user-info-input" type="email" name="email" placeholder="Enter your email">
+      <input class="form-control user-info-input" type="password" name="password" placeholder="Enter your password">
+      <input class="btn btn-outline-dark" type="submit" value="Login">
+    </form>
 
-  <p>Don't have an account yet? Register <a href="/registration">here!</a></p>
+    <p class="p-margin">Don't have an account yet? Register <a href="/registration">here!</a></p>
+  </div>
 </body>
 </html>
