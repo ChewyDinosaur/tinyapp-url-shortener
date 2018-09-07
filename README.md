@@ -23,3 +23,4 @@ Users can create, share, edit, and delete their tinyURLs. Stats such as amount o
 
 - After cloning the repo, run `npm install` to install the dependencies. 
 - Run the development web server using the `node express_server.js` command.
+- tinyAPP will then be accessable at `localhost:8080` and shortened URLs will redirect by inputting `localhost:8080/u/<tinyURL>` in the address bar.
