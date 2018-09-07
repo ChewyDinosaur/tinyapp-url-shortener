@@ -20,6 +20,8 @@
       </div>
     </form>
 
+    <a href="/urls"><button class="btn btn-outline-dark" style="margin-bottom: 20px">Back to URLS</button></a>
+
     <div class="table-responsive"> 
         <table class="table">
           <thead class="thead-light">
@@ -44,7 +46,29 @@
           </tbody>
         </table>
       </div>
-    <a href="/urls"><button class="btn btn-outline-dark">Back to URLS</button></a>
+
+      <h2>Visitor Data</h2>
+      <div class="table-responsive visitor-table"> 
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Visitor ID</th>
+                <th scope="col">Time Visited</th>
+                <th scope="col">Date Visited</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let i in urls[shortURL].timeVisited) { %>
+                <tr>
+                  <td><%= i %></td>
+                  <td><%= urls[shortURL].timeVisited[i].time %></td>
+                  <td><%= urls[shortURL].timeVisited[i].date %></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+    
   </div>
 </body>
 </html>

@@ -158,6 +158,7 @@ app.get('/u/:id', (req, res) => {
     cookie: cookie,
     error: null
   };
+
   // check to make sure shortURL is valid
   if (!urlDatabase.hasOwnProperty(shortURL)) {
     templateVars.error = 'Invalid tinyURL';
@@ -167,7 +168,8 @@ app.get('/u/:id', (req, res) => {
       return res.status(301).render('login', templateVars);
     }
   }
-  let longURL = urlDatabase[shortURL].url;
+  
+  // Add to visit counts
   urlDatabase[shortURL].visits += 1;
   // Check if user is logged in, and add a unique visit if they are visiting for the first time
   if (cookie.user_id) {
@@ -175,6 +177,17 @@ app.get('/u/:id', (req, res) => {
       urlDatabase[shortURL].uniqueVisitors.push(cookie.user_id);
     }
   }
+
+  // Add new timestamp and visitorID
+  const visitorID = generateRandomString();
+  const date = getToday();
+  const time = getTime();
+  urlDatabase[shortURL].timeVisited[visitorID] = {
+    date: date,
+    time: time
+  }
+
+  let longURL = urlDatabase[shortURL].url;
   res.redirect(longURL);
 });
 
@@ -191,7 +204,8 @@ app.post('/urls', (req, res) => {
     url: longURL,
     visits: 0,
     uniqueVisitors: [],
-    created: created
+    created: created,
+    timeVisited: {}
   };
   res.redirect(`/urls/${shortURL}`);
 });
@@ -311,7 +325,8 @@ function urlsForUser(id) {
         url: urlDatabase[i].url,
         visits: urlDatabase[i].visits,
         uniqueVisitors: urlDatabase[i].uniqueVisitors,
-        created: urlDatabase[i].created
+        created: urlDatabase[i].created,
+        timeVisited: urlDatabase[i].timeVisited
       };
     }
   }
@@ -326,4 +341,12 @@ function getToday() {
   const year = today.getFullYear();
 
   return `${months[month]} ${day}, ${year}`;
+}
+
+function getTime() {
+  const time = new Date();
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+
+  return `${hours}:${minutes}`;
 }
