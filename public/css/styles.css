@@ -69,6 +69,7 @@ body {
 .error {
   background-color: orange;
   padding: 5px;
+  margin-bottom: 10px;
   max-width: 500px;
   border-radius: 5px;
 }
