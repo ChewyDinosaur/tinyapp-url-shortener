@@ -2,13 +2,13 @@
 
 tinyAPP is a nodejs application powered by Express and EJS that provides a shortened URL and redirection for user submitted URLs.
 
-![Login Page](https://i.imgur.com/FLiCyzk.png)
+![Login Page](https://github.com/ChewyDinosaur/tinyapp-url-shortener/blob/master/docs/login-page.png)
 
 -------
 
 Users can create, share, edit, and delete their tinyURLs. Stats such as amount of times a tinyURL has been visited and the date the tinyURL was created are tracked as well.
 
-![tinyURLs List Page](https://i.imgur.com/J0b0Lw6.png)
+![tinyURLs List Page](https://github.com/ChewyDinosaur/tinyapp-url-shortener/blob/master/docs/url-list-page.png)
 
 ## Dependencies
 
