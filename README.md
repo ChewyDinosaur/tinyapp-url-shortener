@@ -8,7 +8,7 @@ tinyAPP is a nodejs application powered by Express and EJS that provides a short
 
 Users can create, share, edit, and delete their tinyURLs. Stats such as amount of times a tinyURL has been visited and the date the tinyURL was created are tracked as well.
 
-![tinyURLs List Page](https://i.imgur.com/J0b0Lw6)
+![tinyURLs List Page](https://i.imgur.com/J0b0Lw6.png)
 
 ## Dependencies
 
