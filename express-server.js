@@ -50,7 +50,7 @@ const users = {
 
 
 app.get('/', (req, res) => {
-  let cookie = req.session;
+  const cookie = req.session;
   if (cookie.user_id) {
     res.redirect('/urls');
   } else {
@@ -249,7 +249,7 @@ app.post('/register', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Example app listening on port: ${PORT}`);
+  console.log(`tinyAPP listening on port: ${PORT}`);
 });
 
 
