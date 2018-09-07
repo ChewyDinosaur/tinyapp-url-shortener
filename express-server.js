@@ -169,7 +169,6 @@ app.get('/u/:id', (req, res) => {
     }
   }
   
-  // Add to visit counts
   urlDatabase[shortURL].visits += 1;
   // Check if user is logged in, and add a unique visit if they are visiting for the first time
   if (cookie.user_id) {
