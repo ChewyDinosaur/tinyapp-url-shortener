@@ -58,14 +58,18 @@ app.get('/', (req, res) => {
   }
 });
 
-app.get('/registration', (req, res) => {
+app.get('/register', (req, res) => {
   const cookie = req.session;
   let templateVars = {
     users: users,
     error: null,
     cookie: cookie,
   };
-  res.render('registration', templateVars);
+  if (cookie.user_id) {
+    res.redirect('urls');
+  } else {
+    res.render('register', templateVars);
+  }
 });
 
 app.get('/login', (req, res) => {
@@ -75,7 +79,11 @@ app.get('/login', (req, res) => {
     error: null,
     cookie: cookie,
   }
-  res.render('login', templateVars);
+  if (cookie.user_id) {
+    res.redirect('urls');
+  } else {
+    res.render('login', templateVars);
+  }
 });
 
 app.get('/urls', (req, res) => {
@@ -126,7 +134,8 @@ app.get('/urls/:id', (req, res) => {
 
   if (!cookie.user_id) {
     // Not logged in
-    res.status(403).render('login', { error: 'You need to be logged in to view that page.' });
+    templateVars.error = 'You need to be logged in to view that page.'
+    res.status(403).render('login', templateVars);
   } else if (cookie.user_id === urlDatabase[shortURL].userID) {
     // Logged in and url belongs to user
     res.render('urls_show', templateVars)
@@ -139,10 +148,22 @@ app.get('/urls/:id', (req, res) => {
 
 app.get('/u/:id', (req, res) => {
   const shortURL = req.params.id;
-
+  const cookie = req.session;
+  const userURLS = urlsForUser(cookie.user_id);
+  let templateVars = { 
+    urls: userURLS,
+    users: users,
+    cookie: cookie,
+    error: null
+  };
   // check to make sure shortURL is valid
   if (!urlDatabase.hasOwnProperty(shortURL)) {
-    return res.send('Incorrect URL');
+    templateVars.error = 'Invalid tinyURL';
+    if (cookie.user_id) {
+      return res.status(301).render('urls_index', templateVars);
+    } else {
+      return res.status(301).render('login', templateVars);
+    }
   }
   let longURL = urlDatabase[shortURL].url;
   urlDatabase[shortURL].visits += 1;
@@ -228,14 +249,14 @@ app.post('/register', (req, res) => {
   // Check to make sure fields are not empty
   if (email === '' || password === '') {
     templateVars.error = 'Email or password was left blank.';
-    return res.status(400).render('registration', templateVars);
+    return res.status(400).render('register', templateVars);
   }
 
   // Check if email already exists in database
   for (var i in users) {
     if (users[i].email === email) {
       templateVars.error = 'An account with that email already exists.'
-      return res.status(400).render('registration', templateVars);
+      return res.status(400).render('register', templateVars);
     }
   }
 
