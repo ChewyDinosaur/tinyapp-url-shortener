@@ -27,6 +27,7 @@
               <th scope="col">tinyURL</th>
               <th scope="col">Destination</th>
               <th scope="col">Total Visits</th>
+              <th scope="col">Unique Visits</th>
               <th scope="col">Created</th>
               <th scope="col"></th>
               <th scope="col"></th>
@@ -37,6 +38,7 @@
               <td><%= shortURL %></td>
               <td><%= longURL %></td>
               <td><%= urls[shortURL].visits %></td>
+              <td><%= urls[shortURL].uniqueVisitors.length %></td>
               <td><%= urls[shortURL].created %></td>
             </tr>
           </tbody>

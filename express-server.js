@@ -169,6 +169,12 @@ app.get('/u/:id', (req, res) => {
   }
   let longURL = urlDatabase[shortURL].url;
   urlDatabase[shortURL].visits += 1;
+  // Check if user is logged in, and add a unique visit if they are visiting for the first time
+  if (cookie.user_id) {
+    if (urlDatabase[shortURL].uniqueVisitors.indexOf(cookie.user_id) === -1) {
+      urlDatabase[shortURL].uniqueVisitors.push(cookie.user_id);
+    }
+  }
   res.redirect(longURL);
 });
 
@@ -184,6 +190,7 @@ app.post('/urls', (req, res) => {
     userID: req.session.user_id,
     url: longURL,
     visits: 0,
+    uniqueVisitors: [],
     created: created
   };
   res.redirect(`/urls/${shortURL}`);
@@ -303,6 +310,7 @@ function urlsForUser(id) {
         userID: id,
         url: urlDatabase[i].url,
         visits: urlDatabase[i].visits,
+        uniqueVisitors: urlDatabase[i].uniqueVisitors,
         created: urlDatabase[i].created
       };
     }

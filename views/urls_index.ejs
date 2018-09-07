@@ -18,6 +18,7 @@
             <th scope="col">tinyURL</th>
             <th scope="col">Destination</th>
             <th scope="col">Total Visits</th>
+            <th scope="col">Unique Visits</th>
             <th scope="col">Created</th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -29,6 +30,7 @@
               <td><p class="p-margin"><%= i %><p></td>
               <td><p class="p-margin"><%= urls[i].url %></p></td>
               <td><p class="p-margin"><%= urls[i].visits %></p></td>
+              <td><p class="p-margin"><%= urls[i].uniqueVisitors.length %></p></td>
               <td><p class="p-margin"><%= urls[i].created %></p></td>
               <td><a href="/urls/<%= i %>"><button class="btn btn-outline-dark">Edit</button></a></td>
               <td><button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#confirmationModal">Delete</button></td>
